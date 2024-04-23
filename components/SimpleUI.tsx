@@ -62,6 +62,7 @@ export class SimpleUI extends Component<SimpleUIProps, SimpleUIState> {
     });
   };
 
+ 
   // Store changed token amount to state
   onToSendChanged = (e: ChangeEvent<HTMLInputElement>) =>
     this.setState({
@@ -81,7 +82,7 @@ export class SimpleUI extends Component<SimpleUIProps, SimpleUIState> {
 
     // Create the signing client
     const offlineSigner: OfflineSigner =
-      window.getOfflineSigner!("theta-testnet-001");
+      window.getOfflineSigner!("cosmos");
     const signingClient = await SigningStargateClient.connectWithSigner(
       this.props.rpcUrl,
       offlineSigner
@@ -111,7 +112,7 @@ export class SimpleUI extends Component<SimpleUIProps, SimpleUIState> {
   // Print rpcUrl and chainName
   printStuff = () => {
     console.log(this.props.rpcUrl);
-    console.log(this.props.chainName);
+    console.log(this.state.chainID);
   };
 
   // When the user clicks the "Connect Wallet" button
@@ -137,7 +138,8 @@ export class SimpleUI extends Component<SimpleUIProps, SimpleUIState> {
 
     // Create the signing client
     const offlineSigner: OfflineSigner =
-      window.getOfflineSigner!(this.props.chainName);
+      window.getOfflineSigner!("cosmoshub-4");
+    console.log("offline signer",offlineSigner);
     const signingClient = await SigningStargateClient.connectWithSigner(
       this.props.rpcUrl,
       offlineSigner
@@ -154,15 +156,16 @@ export class SimpleUI extends Component<SimpleUIProps, SimpleUIState> {
   };
 
   onDelegate = async (e:MouseEvent<HTMLButtonElement>) => {
-    console.log("Haleeeeeeeee")
+    console.log("Hello delegate!")
     const msg = MsgDelegate.fromPartial({
-      delegatorAddress: "cosmos1nhzfugalfm29htfep7tx3y5fhm8jhks5cy48sl",
-      validatorAddress: "cosmos1ytxzuwahjhssekxkk9sarlz05utvfev85j6n3z",
-      amount: coin(100, "ustake"),
+      delegatorAddress: "cosmos1nhzfugalfm29htfep7tx3y5fhm8jhks5cy48sl", //01node
+      validatorAddress: "cosmosvaloper178h4s6at5v9cd8m9n7ew3hg7k9eh0s6wptxpcn",
+      amount: { denom: "stake", amount: "100" },
     });
     console.log(msg)
+    
     const offlineSigner: OfflineSigner =
-    window.getOfflineSigner!("cosmos");
+    window.getOfflineSigner!("cosmoshub-4");
     console.log("offline signer",offlineSigner)
     const signingClient = await SigningStargateClient.connectWithSigner(
     this.props.rpcUrl,
@@ -177,25 +180,25 @@ export class SimpleUI extends Component<SimpleUIProps, SimpleUIState> {
       amount: [
         {
           denom: "uatom",
-          amount: "2000",
+          amount: "10",
         },
       ],
       gas: "180000", // 180k
     };
-/*     console.log(msgAny)
+    console.log(msgAny)
     const gasUsed = await signingClient.signAndBroadcast(
-      "cosmos1nhzfugalfm29htfep7tx3y5fhm8jhks5cy48sl",+
-      
+      "cosmos1nhzfugalfm29htfep7tx3y5fhm8jhks5cy48sl",
+  
       [msgAny],
       fee,
       memo
     );
-    console.log("Gas used: ", gasUsed); */
+    console.log("Gas used: ", gasUsed);
   }
 
   // Get chain information for testnet
   getTestnetChainInfo = (): ChainInfo => ({
-    chainId: "cosmos-hub",
+    chainId: "cosmos",
     chainName: "Cosmos",
     rpc: "https://cosmos-rpc.publicnode.com:443",
     rest: "https://cosmos-rest.publicnode.com",
@@ -250,6 +253,8 @@ export class SimpleUI extends Component<SimpleUIProps, SimpleUIState> {
       <div>
         <fieldset>
           <legend>Your Wallet</legend>
+          <p>Chain: {chainName}</p>
+          <p>Chain ID: {this.state.chainID}</p>
           <p>Address: {myAddress}</p>
           <p>Balance: {myBalance} {this.state.denom}</p>
         </fieldset>
@@ -262,7 +267,7 @@ export class SimpleUI extends Component<SimpleUIProps, SimpleUIState> {
         <fieldset>
           <button onClick={this.onKeplrClicked}>Connect Wallet</button>
           {/* Buttons to change rpcUrl */}
-          <button onClick={() => {this.props.onRpcUrlChange("cosmos");}}>Cosmos Hub</button>
+          <button onClick={() => {this.props.onRpcUrlChange("cosmoshub-4")}}>Cosmos Hub</button>
           <button onClick={() => {this.props.onRpcUrlChange("celestia")}}>Celestia</button>
           <button onClick={() => {this.props.onRpcUrlChange("osmosis")}}>Osmosis</button>
           <button onClick={this.onDelegate}>Delegate</button>       

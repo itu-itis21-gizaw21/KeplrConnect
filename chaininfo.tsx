@@ -92,8 +92,8 @@ interface ChainInfo {
       coinType: 118,
      
     },
-    "cosmos": {
-      chainId: "cosmos",
+    "cosmoshub-4": {
+      chainId: "cosmoshub-4",
       chainName: "Cosmos",
       rpc: "https://cosmos-rpc.publicnode.com:443",
       rest: "https://cosmos-rest.publicnode.com",

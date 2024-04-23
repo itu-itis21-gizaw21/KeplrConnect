@@ -4,15 +4,16 @@ import { SimpleUI, SimpleUIProps } from '../components/SimpleUI'
 import chains from '../chaininfo';
 
 const Home: NextPage = () => {
-  const [rpcUrl, setRpcUrl] = useState<string>("https://rpc.sentry-01.theta-testnet.polypore.xyz");
-  const [chainName, setChainName] = useState<string>("theta-testnet-001");
+  const [rpcUrl, setRpcUrl] = useState<string>("https://cosmos-rpc.publicnode.com:443");
+  const [chainName, setChainName] = useState<string>("cosmoshub-4");
 
   const handleRpcUrlChange = (newRpcUrl: string) => {
-    const chain = chains[newRpcUrl];
-    if (chain) {
+    const chain = chains[chainName];
+    console.log("index.ts chain",chain);
+   /*  if (chain) {
       setRpcUrl(chain.rpc);
     }
-    setChainName(newRpcUrl);
+    setChainName(newRpcUrl); */
   };
 
   return (
